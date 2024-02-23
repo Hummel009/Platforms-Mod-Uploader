@@ -26,7 +26,7 @@ jobs:
         with:
           arguments: :app${{matrix.version}}:build
       - name: Upload Artifact
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@v3.1.3
         with:
           name: compiled-artifact
           path: ./app${{matrix.version}}/build/libs/*.jar
