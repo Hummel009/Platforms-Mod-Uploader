@@ -15,12 +15,8 @@ dependencies {
 	embed("org.jetbrains.kotlin:kotlin-stdlib:1.9.22")
 	embed("com.google.code.gson:gson:2.10.1")
 	embed("org.apache.httpcomponents.client5:httpclient5:5.3")
-	embed("com.formdev:flatlaf:3.2.5")
-	embed("com.formdev:flatlaf-intellij-themes:3.2.5")
 	implementation("com.google.code.gson:gson:2.10.1")
 	implementation("org.apache.httpcomponents.client5:httpclient5:5.3")
-	implementation("com.formdev:flatlaf:3.2.5")
-	implementation("com.formdev:flatlaf-intellij-themes:3.2.5")
 }
 
 java {
