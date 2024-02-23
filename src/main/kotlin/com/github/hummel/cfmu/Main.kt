@@ -77,10 +77,10 @@ private fun publishProject(
 }
 
 private val modLoaderMappings = mapOf(
-	"NeoForge" to 10150, //NeoForge
-	"Forge" to 7498, //Forge
-	"Fabric" to 7499, //Fabric
-	"Quilt" to 9153 //Quilt
+	"NeoForge" to 10150,
+	"Forge" to 7498,
+	"Fabric" to 7499,
+	"Quilt" to 9153
 )
 
 private fun getJarInfo(
