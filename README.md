@@ -9,7 +9,7 @@
 [![Technical Debt][technical_debt_badge]][technical_debt_link]
 [![Lines of Code][lines_of_code_badge]][lines_of_code_link]
 
-Программа для загрузки множества версий мода на CurseForge. Исходя из имени файла, определяетв версию Minecraft
+Программа для загрузки множества версий мода на CurseForge. Исходя из имени файла, определяет версию Minecraft
 и тип загрузчика (Forge, Fabric...), после чего загружает с нужными данными на платформу.
 
 ## Использование
