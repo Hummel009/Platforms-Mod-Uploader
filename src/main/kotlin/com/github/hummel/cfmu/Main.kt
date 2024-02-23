@@ -11,22 +11,11 @@ import org.apache.hc.core5.http.io.entity.EntityUtils
 import java.io.File
 
 fun main() {
-	print("Enter token: ")
+	val config = Gson().fromJson(File("config.json").readText(), Config::class.java)
+	val idToVersion = getMappingsFromAPI(config.token)
 
-	val token = readln()
-
-	val idToVersion = getMappingsFromAPI(token)
-
-	val exampleFileName = "[1.3.2] API Upload Test 24.02.29 (Forge).jar"
-
-	val projectIds = arrayOf(
-		389886, //The Rings of Power
-		654414, //Legendary Item
-		663217 //Dirt Tools and Armor
-	)
-
-	projectIds.forEach { project ->
-		publishProject(project, idToVersion, token)
+	config.projectIds.forEach { project ->
+		publishProject(project, idToVersion, config.token)
 	}
 }
 
@@ -157,4 +146,10 @@ private fun String.extractModLoader(): String {
 
 data class GameVersion(
 	val id: Int, val gameVersionTypeID: Int, val name: String, val slug: String, val apiVersion: String?
+)
+
+data class Config(
+	val token: String,
+	val projectIds: List<Int>,
+	val projectNames: List<String>
 )
