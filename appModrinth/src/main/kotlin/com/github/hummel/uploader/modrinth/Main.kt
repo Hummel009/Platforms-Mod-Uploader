@@ -1,5 +1,9 @@
-package com.github.hummel.modrinth
+package com.github.hummel.uploader.modrinth
 
+import com.github.hummel.uploader.Config
+import com.github.hummel.uploader.extractMcVersion
+import com.github.hummel.uploader.extractModLoader
+import com.github.hummel.uploader.sortAlphabetically
 import com.google.gson.Gson
 import org.apache.hc.client5.http.classic.methods.HttpPost
 import org.apache.hc.client5.http.entity.mime.MultipartEntityBuilder
@@ -20,21 +24,8 @@ private fun publishProject(
 	project: String, token: String
 ) {
 	val files = File("folders/$project").listFiles() ?: return
-	val fileComparator = Comparator<File> { file1, file2 ->
-		val version1 = file1.name.extractMcVersion()
-		val version2 = file2.name.extractMcVersion()
 
-		val parts1 = version1.split('.').map { it.toInt() }
-		val parts2 = version2.split('.').map { it.toInt() }
-
-		return@Comparator (0 until 3).asSequence().map {
-			parts1[it].compareTo(parts2[it])
-		}.firstOrNull {
-			it != 0
-		} ?: 0
-	}
-
-	files.sortWith(fileComparator)
+	files.sortAlphabetically()
 
 	files.forEach { jar ->
 		val mcVersion = jar.name.extractMcVersion()
@@ -78,19 +69,3 @@ private fun publishProject(
 		}
 	}
 }
-
-private fun String.extractMcVersion(): String {
-	val versionRegex = Regex("""\[(.+)\]""")
-	val versionMatch = versionRegex.find(this)
-	return versionMatch?.groupValues?.get(1) ?: ""
-}
-
-private fun String.extractModLoader(): String {
-	val versionRegex = Regex("""\((.+)\)""")
-	val versionMatch = versionRegex.find(this)
-	return versionMatch?.groupValues?.get(1) ?: ""
-}
-
-data class Config(
-	val token: String, val projectIds: List<String>, val projectNames: List<String>
-)

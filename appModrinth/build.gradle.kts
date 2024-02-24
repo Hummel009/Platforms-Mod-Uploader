@@ -12,6 +12,7 @@ version = LocalDate.now().format(DateTimeFormatter.ofPattern("yy.MM.dd"))
 val embed: Configuration by configurations.creating
 
 dependencies {
+	implementation(project(":appCommon"))
 	embed("org.jetbrains.kotlin:kotlin-stdlib:1.9.22")
 	embed("com.google.code.gson:gson:2.10.1")
 	embed("org.apache.httpcomponents.client5:httpclient5:5.3")
@@ -26,7 +27,7 @@ java {
 }
 
 application {
-	mainClass = "com.github.hummel.modrinth.MainKt"
+	mainClass = "com.github.hummel.uploader.modrinth.MainKt"
 }
 
 tasks {
@@ -37,7 +38,7 @@ tasks {
 		manifest {
 			attributes(
 				mapOf(
-					"Main-Class" to "com.github.hummel.modrinth.MainKt"
+					"Main-Class" to "com.github.hummel.uploader.modrinth.MainKt"
 				)
 			)
 		}

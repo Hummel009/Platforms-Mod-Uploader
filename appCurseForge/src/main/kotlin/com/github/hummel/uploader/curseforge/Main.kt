@@ -1,5 +1,9 @@
-package com.github.hummel.curseforge
+package com.github.hummel.uploader.curseforge
 
+import com.github.hummel.uploader.Config
+import com.github.hummel.uploader.extractMcVersion
+import com.github.hummel.uploader.extractModLoader
+import com.github.hummel.uploader.sortAlphabetically
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.apache.hc.client5.http.classic.methods.HttpGet
@@ -15,7 +19,7 @@ fun main() {
 	val idToVersion = getMappingsFromAPI(config.token)
 
 	config.projectIds.forEach { project ->
-		publishProject(project, idToVersion, config.token)
+		publishProject(project.toInt(), idToVersion, config.token)
 	}
 }
 
@@ -23,21 +27,8 @@ private fun publishProject(
 	project: Int, idToVersion: MutableMap<Int, String>, token: String
 ) {
 	val files = File("folders/$project").listFiles() ?: return
-	val fileComparator = Comparator<File> { file1, file2 ->
-		val version1 = file1.name.extractMcVersion()
-		val version2 = file2.name.extractMcVersion()
 
-		val parts1 = version1.split('.').map { it.toInt() }
-		val parts2 = version2.split('.').map { it.toInt() }
-
-		return@Comparator (0 until 3).asSequence().map {
-			parts1[it].compareTo(parts2[it])
-		}.firstOrNull {
-			it != 0
-		} ?: 0
-	}
-
-	files.sortWith(fileComparator)
+	files.sortAlphabetically()
 
 	files.forEach { jar ->
 		val (mcVersionId, modLoaderId) = getJarInfo(jar, idToVersion)
@@ -53,12 +44,12 @@ private fun publishProject(
 			val multipartEntityBuilder = MultipartEntityBuilder.create()
 			multipartEntityBuilder.addTextBody(
 				"metadata", """
-										{
-											"changelog": "",
-											"gameVersions": [$mcVersionId, $modLoaderId, $serverSidenessId, $clientSidenessId],
-											"releaseType": "release"
-										}
-										""".trimIndent(), ContentType.APPLICATION_JSON
+				{
+					"changelog": "",
+					"gameVersions": [$mcVersionId, $modLoaderId, $serverSidenessId, $clientSidenessId],
+					"releaseType": "release"
+				}
+				""".trimIndent(), ContentType.APPLICATION_JSON
 			)
 			multipartEntityBuilder.addBinaryBody(
 				"file", jar, ContentType.DEFAULT_BINARY, jar.name
@@ -131,25 +122,3 @@ private fun parseMappings(json: String): MutableMap<Int, String> {
 
 	return idToVer
 }
-
-private fun String.extractMcVersion(): String {
-	val versionRegex = Regex("""\[(.+)\]""")
-	val versionMatch = versionRegex.find(this)
-	return versionMatch?.groupValues?.get(1) ?: ""
-}
-
-private fun String.extractModLoader(): String {
-	val versionRegex = Regex("""\((.+)\)""")
-	val versionMatch = versionRegex.find(this)
-	return versionMatch?.groupValues?.get(1) ?: ""
-}
-
-data class GameVersion(
-	val id: Int, val gameVersionTypeID: Int, val name: String, val slug: String, val apiVersion: String?
-)
-
-data class Config(
-	val token: String,
-	val projectIds: List<Int>,
-	val projectNames: List<String>
-)
