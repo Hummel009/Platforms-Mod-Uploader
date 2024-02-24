@@ -17,6 +17,7 @@ fun main() {
 
 	config.projectIds.forEach { project ->
 		publishProject(project, config.token)
+		readln()
 	}
 }
 
