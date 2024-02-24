@@ -24,7 +24,7 @@ fun main() {
 }
 
 private fun publishProject(
-	project: Int, idToVersion: MutableMap<Int, String>, token: String
+	project: Int, idToVersion: Map<Int, String>, token: String
 ) {
 	val files = File("folders/$project").listFiles() ?: return
 
@@ -75,7 +75,7 @@ private val modLoaderMappings = mapOf(
 )
 
 private fun getJarInfo(
-	jar: File, idToVersion: MutableMap<Int, String>
+	jar: File, idToVersion: Map<Int, String>
 ): Pair<Int, Int> {
 	val mcVersion = jar.name.extractMcVersion()
 	val modLoader = jar.name.extractModLoader()
@@ -94,7 +94,7 @@ private fun getJarInfo(
 	return mcVersionId to (modLoaderMappings[modLoader] ?: error("Wrong ModLoader ID!"))
 }
 
-private fun getMappingsFromAPI(token: String): MutableMap<Int, String> {
+private fun getMappingsFromAPI(token: String): Map<Int, String> {
 	HttpClients.createDefault().use {
 		val request = HttpGet("https://minecraft.curseforge.com/api/game/versions")
 		request.addHeader("X-Api-Token", token)
@@ -109,7 +109,7 @@ private fun getMappingsFromAPI(token: String): MutableMap<Int, String> {
 	}
 }
 
-private fun parseMappings(json: String): MutableMap<Int, String> {
+private fun parseMappings(json: String): Map<Int, String> {
 	val gson = Gson()
 
 	val listType = object : TypeToken<List<GameVersion>>() {}.type
