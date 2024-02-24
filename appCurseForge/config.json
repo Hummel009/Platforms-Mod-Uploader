@@ -1,9 +1,9 @@
 {
 	"token": "TOKEN_EXAMPLE",
 	"projectIds": [
-		389886,
-		654414,
-		663217
+		"389886",
+		"654414",
+		"663217"
 	],
 	"projectNames": [
 		"The Rings of Power",
