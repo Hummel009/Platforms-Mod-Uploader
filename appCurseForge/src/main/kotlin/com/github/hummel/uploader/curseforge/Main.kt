@@ -117,6 +117,7 @@ private fun parseMappings(json: String): Map<Int, String> {
 	val gameVersions = gson.fromJson<List<GameVersion>>(json, listType)
 
 	val idToVer = mutableMapOf<Int, String>()
+
 	gameVersions.forEach { idToVer[it.id] = it.name }
 
 	return idToVer
