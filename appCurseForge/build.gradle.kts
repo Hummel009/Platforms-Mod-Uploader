@@ -12,10 +12,11 @@ version = LocalDate.now().format(DateTimeFormatter.ofPattern("yy.MM.dd"))
 val embed: Configuration by configurations.creating
 
 dependencies {
-	implementation(project(":appCommon"))
+	embed(project(":appCommon"))
 	embed("org.jetbrains.kotlin:kotlin-stdlib:1.9.22")
 	embed("com.google.code.gson:gson:2.10.1")
 	embed("org.apache.httpcomponents.client5:httpclient5:5.3")
+	implementation(project(":appCommon"))
 	implementation("com.google.code.gson:gson:2.10.1")
 	implementation("org.apache.httpcomponents.client5:httpclient5:5.3")
 }
