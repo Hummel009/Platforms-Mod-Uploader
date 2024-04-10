@@ -15,10 +15,10 @@ dependencies {
 	embed(project(":appCommon"))
 	embed("org.jetbrains.kotlin:kotlin-stdlib:1.9.23")
 	embed("com.google.code.gson:gson:2.10.1")
-	embed("org.apache.httpcomponents.client5:httpclient5:5.3")
+	embed("org.apache.httpcomponents.client5:httpclient5:5.3.1")
 	implementation(project(":appCommon"))
 	implementation("com.google.code.gson:gson:2.10.1")
-	implementation("org.apache.httpcomponents.client5:httpclient5:5.3")
+	implementation("org.apache.httpcomponents.client5:httpclient5:5.3.1")
 }
 
 java {
