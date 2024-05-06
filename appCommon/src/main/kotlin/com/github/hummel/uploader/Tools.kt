@@ -3,15 +3,21 @@ package com.github.hummel.uploader
 import java.io.File
 
 fun String.extractMcVersion(): String {
-	val versionRegex = Regex("""\[(.+)\]""")
-	val versionMatch = versionRegex.find(this)
-	return versionMatch?.groupValues?.get(1) ?: ""
+	val regex = Regex("""\[(.+)\]""")
+	val match = regex.find(this)
+	return match?.groupValues?.get(1) ?: ""
 }
 
 fun String.extractModLoader(): String {
-	val versionRegex = Regex("""\((.+)\)""")
-	val versionMatch = versionRegex.find(this)
-	return versionMatch?.groupValues?.get(1) ?: ""
+	val regex = Regex("""\((.+)\)""")
+	val match = regex.find(this)
+	return match?.groupValues?.get(1) ?: ""
+}
+
+fun String.extractModVersion(): String {
+	val regex = Regex("""(\d{2}\.\d{2}\.\d{2})""")
+	val match = regex.find(this)
+	return match?.groupValues?.get(1) ?: ""
 }
 
 fun Array<out File>.sortAlphabetically() {

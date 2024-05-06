@@ -1,9 +1,6 @@
 package com.github.hummel.uploader.modrinth
 
-import com.github.hummel.uploader.Config
-import com.github.hummel.uploader.extractMcVersion
-import com.github.hummel.uploader.extractModLoader
-import com.github.hummel.uploader.sortAlphabetically
+import com.github.hummel.uploader.*
 import com.google.gson.Gson
 import org.apache.hc.client5.http.classic.methods.HttpPost
 import org.apache.hc.client5.http.entity.mime.MultipartEntityBuilder
@@ -31,6 +28,7 @@ private fun publishProject(
 	files.forEach { jar ->
 		val mcVersion = jar.name.extractMcVersion()
 		val modLoader = jar.name.extractModLoader().lowercase()
+		val modVersion = jar.name.extractModVersion()
 
 		HttpClients.createDefault().use {
 			val url = "https://api.modrinth.com/v2/version"
@@ -44,7 +42,7 @@ private fun publishProject(
 				"data", """
 				{
 					"name": "${jar.name}",
-					"version_number": "24.02.29",
+					"version_number": "$modVersion",
 					"dependencies": [],
 					"version_type": "release",
 					"featured": true,
