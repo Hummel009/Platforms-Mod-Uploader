@@ -21,19 +21,37 @@ fun String.extractModVersion(): String {
 }
 
 fun Array<out File>.sortAlphabetically() {
-	val fileComparator = Comparator<File> { file1, file2 ->
-		val version1 = file1.name.extractMcVersion()
-		val version2 = file2.name.extractMcVersion()
+	try {
+		val fileComparatorMinor = Comparator<File> { file1, file2 ->
+			val version1 = file1.name.extractMcVersion()
+			val version2 = file2.name.extractMcVersion()
 
-		val parts1 = version1.split('.').map { it.toInt() }
-		val parts2 = version2.split('.').map { it.toInt() }
+			val parts1 = version1.split('.').map { it.toInt() }
+			val parts2 = version2.split('.').map { it.toInt() }
 
-		return@Comparator (0 until 3).asSequence().map {
-			parts1[it].compareTo(parts2[it])
-		}.firstOrNull {
-			it != 0
-		} ?: 0
+			return@Comparator (0 until 3).asSequence().map {
+				parts1[it].compareTo(parts2[it])
+			}.firstOrNull {
+				it != 0
+			} ?: 0
+		}
+
+		sortWith(fileComparatorMinor)
+	} catch (e: Exception) {
+		val fileComparatorMinor = Comparator<File> { file1, file2 ->
+			val version1 = file1.name.extractMcVersion()
+			val version2 = file2.name.extractMcVersion()
+
+			val parts1 = version1.split('.').map { it.toInt() }
+			val parts2 = version2.split('.').map { it.toInt() }
+
+			return@Comparator (0 until 2).asSequence().map {
+				parts1[it].compareTo(parts2[it])
+			}.firstOrNull {
+				it != 0
+			} ?: 0
+		}
+
+		sortWith(fileComparatorMinor)
 	}
-
-	sortWith(fileComparator)
 }
