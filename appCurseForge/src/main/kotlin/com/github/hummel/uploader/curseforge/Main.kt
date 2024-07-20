@@ -18,16 +18,17 @@ fun main() {
 	val config = Gson().fromJson(File("config.json").readText(), Config::class.java)
 	val idToVersion = getMappingsFromAPI(config.token)
 
-	config.projectIds.forEach { project ->
-		publishProject(project.toInt(), idToVersion, config.token)
+	config.getMapping().forEach { idToName ->
+		publishProject(idToName, idToVersion, config.token)
+		println("All project files were uploaded. Press any key to continue...")
 		readln()
 	}
 }
 
 private fun publishProject(
-	project: Int, idToVersion: Map<Int, String>, token: String
+	idToName: Map.Entry<String, String>, idToVersion: Map<Int, String>, token: String
 ) {
-	val files = File("folders/$project").listFiles() ?: return
+	val files = File("folders/${idToName.value}").listFiles() ?: return
 
 	files.sortAlphabetically()
 
@@ -37,7 +38,7 @@ private fun publishProject(
 		val clientSidenessId = 9638
 
 		HttpClients.createDefault().use {
-			val url = "https://minecraft.curseforge.com/api/projects/$project/upload-file"
+			val url = "https://minecraft.curseforge.com/api/projects/${idToName.key}/upload-file"
 
 			val request = HttpPost(url)
 			request.addHeader("X-Api-Token", token)

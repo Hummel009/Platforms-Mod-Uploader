@@ -12,16 +12,17 @@ import java.io.File
 fun main() {
 	val config = Gson().fromJson(File("config.json").readText(), Config::class.java)
 
-	config.projectIds.forEach { project ->
-		publishProject(project, config.token)
+	config.getMapping().forEach { idToName ->
+		publishProject(idToName, config.token)
+		println("All project files were uploaded. Press any key to continue...")
 		readln()
 	}
 }
 
 private fun publishProject(
-	project: String, token: String
+	idToName: Map.Entry<String, String>, token: String
 ) {
-	val files = File("folders/$project").listFiles() ?: return
+	val files = File("folders/${idToName.value}").listFiles() ?: return
 
 	files.sortAlphabetically()
 
@@ -46,7 +47,7 @@ private fun publishProject(
 					"dependencies": [],
 					"version_type": "release",
 					"featured": true,
-					"project_id": "$project",
+					"project_id": "${idToName.key}",
 					"file_parts": ["file"],
 					"loaders": ["$modLoader"],
 					"game_versions": ["$mcVersion"]
